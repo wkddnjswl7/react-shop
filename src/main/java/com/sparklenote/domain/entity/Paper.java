@@ -14,25 +14,21 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Roll extends BaseTimeEntity {
+public class Paper extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long rollId;
+    private int paperId;
 
-    private String rollName;
+    private String content;
 
-    private int classCode;
-
-    private String url;
+    private String sticker;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "roll_id")
+    private Roll roll;
 
-    @OneToMany(mappedBy = "roll")
-    private List<Paper> papers = new ArrayList<>();
-
-
+    @OneToMany(mappedBy = "paper")
+    private List<Sticker> stickers = new ArrayList<>();
 
 }
