@@ -1,6 +1,7 @@
 package com.sparklenote.user.handler;
 
 
+import com.sparklenote.domain.enumType.Role;
 import com.sparklenote.user.jwt.JWTUtil;
 import com.sparklenote.user.oAuth2.CustomOAuth2User;
 import jakarta.servlet.ServletException;
@@ -24,8 +25,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JWTUtil jwtUtil;
 
-    @Value("${jwt.expiration}")
-    private Long jwtExpiration;
+    @Value("${jwt.accessExpiration}") // 30분
+    private Long accessTokenExpiration;
+
+    @Value("${jwt.refreshExpiration}") // 1일
+    private Long refreshTokenExpiration;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -38,18 +42,20 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
-        String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, jwtExpiration);
+        String accessToken = jwtUtil.createAccessToken(username, Role.TEACHER, accessTokenExpiration);
+        String refreshToken = jwtUtil.createRefreshToken(username, refreshTokenExpiration);
 
-        response.addCookie(createCookie("Authorization", token));
+        response.addCookie(createCookie("Authorization", accessToken));
+        response.addCookie(createCookie("RefreshToken", refreshToken));
+
         response.sendRedirect("http://localhost:3000/");
     }
 
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(Math.toIntExact(jwtExpiration / 1000)); // 초 단위로 설정
+        cookie.setMaxAge(Math.toIntExact(accessTokenExpiration / 1000)); // 초 단위로 설정
         //cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
