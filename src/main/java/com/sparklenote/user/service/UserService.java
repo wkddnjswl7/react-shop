@@ -21,6 +21,9 @@ public class UserService {
 
     private final JWTUtil jwtUtil;
 
+    /**
+     * 토큰을 재발급 하는 메소드
+     */
     public TokenResponseDTO refreshToken(TokenRequestDTO tokenRequestDTO) {
         String refreshToken = tokenRequestDTO.getRefreshToken();
         // 리프레시 토큰 검증
@@ -34,9 +37,12 @@ public class UserService {
         return new TokenResponseDTO(newAccessToken);
     }
 
+    /**
+     * 쿠키를 만드는 메소드
+     */
     public Cookie createCookie(String key, String value) {
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(3600); // 예시: 1시간 (초 단위)
+        cookie.setMaxAge(3600); // 1시간 (초 단위)
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         return cookie;
