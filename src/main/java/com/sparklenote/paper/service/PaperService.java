@@ -113,8 +113,8 @@ public class PaperService {
                 .orElseThrow(() -> new PaperException(PAPER_NOT_FOUND));
 
         if (!paper.getStudent().getId().equals(studentId)) {
-
             throw new PaperException(PAPER_DELETE_FORBIDDEN);
+
 
         }
 
