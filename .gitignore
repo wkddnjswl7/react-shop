@@ -48,6 +48,8 @@ out/
 
 /logs/
 
+.env
+
 # .env 파일
 .env
 
