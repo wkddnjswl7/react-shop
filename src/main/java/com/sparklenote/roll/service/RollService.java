@@ -55,8 +55,7 @@ public class RollService {
         String url = urlGenerator.generateUrl(); // URL 생성
 
         // SecurityContextHolder에서 로그인된 사용자의 username 가져오기
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = customOAuth2User.getUsername();
+        String username = getCustomOAuth2User();
 
         // username으로 User 조회
         User user = userRepository.findByUsername(username)
@@ -149,8 +148,7 @@ public class RollService {
 
     public List<RollResponseDTO> getMyRolls() {
         // SecurityContextHolder에서 현재 로그인된 사용자 정보 가져오기
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = customOAuth2User.getUsername();
+        String username = getCustomOAuth2User();
 
         // username으로 User 조회
         User user = userRepository.findByUsername(username)
@@ -163,5 +161,10 @@ public class RollService {
         return rolls.stream()
                 .map(roll -> RollResponseDTO.fromRoll(roll, user.getId()))
                 .collect(Collectors.toList());
+    }
+
+    private static String getCustomOAuth2User() {
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return customOAuth2User.getUsername();
     }
 }
