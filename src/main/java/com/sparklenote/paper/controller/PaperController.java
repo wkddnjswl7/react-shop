@@ -42,6 +42,7 @@ public class PaperController {
     }
 
     @Operation(summary = "Update paper", description = "paper 수정")
+
     @PutMapping("/{id}")    // PUT /paper/{id}
     public ResponseEntity<SnResponse<PaperResponseDTO>> updatePaper(
             @PathVariable Long id,
