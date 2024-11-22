@@ -142,6 +142,7 @@ public class SecurityConfig {
                 antMatcher(GET, "/user/info"),
                 antMatcher(GET, "/user/profile"),
 
+                antMatcher(GET, "/roll/me"),
                 antMatcher(POST, "/roll/create"),
                 antMatcher(PUT, "/roll/update"),
                 antMatcher(GET, "/roll/my/rolls"),
@@ -154,6 +155,4 @@ public class SecurityConfig {
         );
         return requestMatchers.toArray(RequestMatcher[]::new);
     }
-
-
 }
