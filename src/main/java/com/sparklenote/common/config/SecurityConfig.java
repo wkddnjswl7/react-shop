@@ -130,7 +130,8 @@ public class SecurityConfig {
         List<RequestMatcher> requestMatchers = List.of(
               antMatcher(POST, "/user/login"),
               antMatcher(POST, "/roll/join"),
-              antMatcher(GET, "/swagger-ui/**")
+              antMatcher(GET, "/swagger-ui/**"),
+                antMatcher(GET, "/v3/api-docs/**")
         );
         return requestMatchers.toArray(RequestMatcher[]::new);
     }
