@@ -114,7 +114,7 @@ public class SecurityConfig {
                 .logout((logout) -> logout
                 .logoutUrl("/logout")  // 로그아웃 엔드포인트 설정
                 .addLogoutHandler(customLogoutHandler)  // 커스텀 로그아웃 핸들러 추가
-                .logoutSuccessUrl("https://sparklenote.site/login")
+                .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)  // 세션 무효화
                 .deleteCookies("Authorization", "RefreshToken")  // 로그아웃 시 쿠키 삭제
                 .permitAll());
@@ -145,7 +145,6 @@ public class SecurityConfig {
                 antMatcher(GET, "/roll/me"),
                 antMatcher(POST, "/roll/create"),
                 antMatcher(PUT, "/roll/update"),
-                antMatcher(GET, "/roll/my/rolls"),
                 antMatcher(DELETE, "/roll/delete"),
 
                 antMatcher(POST, "/paper/create"),
