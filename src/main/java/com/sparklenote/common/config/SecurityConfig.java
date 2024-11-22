@@ -139,7 +139,7 @@ public class SecurityConfig {
         List<RequestMatcher> requestMatchers = List.of(
                 antMatcher(POST, "/user/tokenRefresh"),
                 antMatcher(GET, "/user/info"),
-                antMatcher(GET, "user/profile"),
+                antMatcher(GET, "/user/profile"),
 
                 antMatcher(POST, "/roll/create"),
                 antMatcher(PUT, "/roll/update"),
