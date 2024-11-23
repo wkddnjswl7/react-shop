@@ -158,6 +158,7 @@ public class SecurityConfig {
                 antMatcher(PUT, "/roll/*"),
                 antMatcher(GET, "/roll/me"),
                 antMatcher(DELETE, "/roll/*"),
+                antMatcher(GET, "/roll/*/join"),
 
                 antMatcher(POST, "/paper/rolls/*"),
                 antMatcher(PUT, "/paper/*"),

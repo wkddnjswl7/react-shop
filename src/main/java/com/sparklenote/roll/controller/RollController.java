@@ -89,10 +89,9 @@ public class RollController {
     }
 
     @GetMapping("/{url}/join")
-    @Operation(summary = "Roll 접근 확인", description = "토큰을 사용하여 Roll 접근 권한을 확인합니다.")
-    public ResponseEntity<SnResponse<RollJoinResponseDto>> checkRollAccess(
-            @PathVariable(name = "url") String url) {
-        RollJoinResponseDto responseDto = rollService.checkRollAccess(url);
-        return ResponseEntity.ok(new SnResponse<>(SUCCESS, responseDto));
+    public ResponseEntity<SnResponse<String>> checkAccess(@PathVariable String url) {
+        // 이미 Security Config에서 인증 체크를 하므로
+        // 여기까지 왔다는 건 이미 인증된 사용자
+        return ResponseEntity.ok(new SnResponse<>(SUCCESS, "authorized"));
     }
 }
