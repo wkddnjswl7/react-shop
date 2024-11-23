@@ -6,6 +6,7 @@ import com.sparklenote.user.jwt.JWTFilter;
 import com.sparklenote.user.jwt.JWTUtil;
 import com.sparklenote.user.oAuth2.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -97,6 +98,13 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler)
                 );
+        // 인증되지 않은 사용자 리디렉션 방지 (로그인 페이지로 리디렉션하지 않음)
+        http.exceptionHandling(customizer ->
+                customizer.authenticationEntryPoint((request, response, authException) -> {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                })
+        );
 
         //경로별 인가 작업
         http
