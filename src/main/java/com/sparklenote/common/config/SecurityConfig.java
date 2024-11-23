@@ -134,6 +134,14 @@ public class SecurityConfig {
      * 권한 없이 허용하는 endpoint
      */
     private RequestMatcher[] permitAllRequestMatchers() {
+        List<RequestMatcher> requestMatchers = List.of(
+              antMatcher(POST, "/user/login"),
+              antMatcher(POST, "/roll/*/join"),
+              antMatcher(GET, "/swagger-ui/**"),
+              antMatcher(GET, "/v3/api-docs/**"),
+              antMatcher(GET, "/roll/*/join")
+        );
+      
         List<RequestMatcher> requestMatchers = new ArrayList<>(List.of(
                 antMatcher(POST, "/user/login"),
                 antMatcher(POST, "/roll/*/join"),
@@ -145,7 +153,6 @@ public class SecurityConfig {
         requestMatchers.add(antMatcher(GET, "/roll/**/favicon/**"));
         requestMatchers.add(antMatcher(GET, "/static/**"));
         requestMatchers.add(antMatcher(GET, "/public/**"));
-
         return requestMatchers.toArray(RequestMatcher[]::new);
     }
 
