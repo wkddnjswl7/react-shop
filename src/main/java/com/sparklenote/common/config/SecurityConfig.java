@@ -145,6 +145,7 @@ public class SecurityConfig {
         requestMatchers.add(antMatcher(GET, "/roll/**/favicon/**"));
         requestMatchers.add(antMatcher(GET, "/static/**"));
         requestMatchers.add(antMatcher(GET, "/public/**"));
+
         return requestMatchers.toArray(RequestMatcher[]::new);
     }
 
