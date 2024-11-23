@@ -164,6 +164,41 @@ public class RollService {
                 .role(Role.STUDENT.name())
                 .build();
     }
+    public RollJoinResponseDto checkRollAccess(String url) {
+        // 1. 현재 인증된 사용자 정보 가져오기
+        String username = getCustomOAuth2User();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND));
+
+        // 2. Roll 조회
+        Roll roll = rollRepository.findByUrl(url)
+                .orElseThrow(() -> new RollException(ROLL_NOT_FOUND));
+
+        // 3. 권한 체크
+        if (user.getRole() == Role.TEACHER) {
+            // 교사인 경우 자신의 Roll인지 확인
+            if (!roll.getUser().getId().equals(user.getId())) {
+                throw new RollException(UNAUTHORIZED_ACCESS);
+            }
+        } else {
+            // 학생인 경우: 해당 롤에 학생이 존재하는지만 체크
+            if (!studentRepository.existsByNameAndRollId(user.getName(), roll.getId())) {
+                throw new RollException(UNAUTHORIZED_ACCESS);
+            }
+        }
+
+        // 4. Paper 목록 조회
+        List<PaperResponseDTO> papers = paperService.getPapers(roll.getId());
+
+        // 5. 응답 DTO 생성
+        return RollJoinResponseDto.builder()
+                .rollName(roll.getRollName())
+                .studentName(user.getName())
+                .papers(papers)
+                .rollId(roll.getId())
+                .role(user.getRole().name())
+                .build();
+    }
 
     public List<RollResponseDTO> getMyRolls() {
         // SecurityContextHolder에서 현재 로그인된 사용자 정보 가져오기
@@ -186,5 +221,4 @@ public class RollService {
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return customOAuth2User.getUsername();
     }
-
 }

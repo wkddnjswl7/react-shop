@@ -87,4 +87,12 @@ public class RollController {
         RollJoinResponseDto responseDto = rollService.joinRoll(url, joinRequestDto);
         return ResponseEntity.ok(new SnResponse<>(SUCCESS, responseDto));
     }
+
+    @GetMapping("/{url}/join")
+    @Operation(summary = "Roll 접근 확인", description = "토큰을 사용하여 Roll 접근 권한을 확인합니다.")
+    public ResponseEntity<SnResponse<RollJoinResponseDto>> checkRollAccess(
+            @PathVariable(name = "url") String url) {
+        RollJoinResponseDto responseDto = rollService.checkRollAccess(url);
+        return ResponseEntity.ok(new SnResponse<>(SUCCESS, responseDto));
+    }
 }
